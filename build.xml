@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<!-- ======================================
+     Date: 	20 Jan 2012
+
+     Project:   Apache POI testing package installation
+
+     Author: 	Apoorv Parijat
+
+     ====================================== -->
+
+<project name="Apache POI Test" default="compile" basedir=".">
+
+
+	<description>
+		Project tests working of Apache POI library.
+	</description>
+
+	
+	<!-- ======================== Clean Target =============== -->
+	<!--
+	     The clean target deletes any previous build.
+	-->
+
+	<target name="clean" description="Clean old directories">
+		<delete dir="build" />
+	</target>
+	
+	<target name="init" depends="clean" description="Initialize directories">
+		<mkdir dir="build" />
+	</target>
+
+	<!-- ======================== Compile target ============ -->
+	<!-- 
+	     Compiles the java class.
+	-->
+
+	<target name="compile" depends="init" description="Compiles Converter.java">
+		<javac debug="true"
+			deprecation="false"
+			optimize="true"
+			source="1.6" 
+			target="1.6" 
+			destdir="build"
+			srcdir="src">
+			<classpath>
+				<path>
+					<fileset dir="lib"/>
+				</path>
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- ========================== Deploy target ============ -->
+	<!--
+	     Deploys the application
+	-->
+
+	<target name="deploy" depends="compile" description="Deploys the application">
+		<copy verbose="true" todir="build">
+			<fileset dir="content" />
+		</copy>
+	</target>
+	
+
+</project>
