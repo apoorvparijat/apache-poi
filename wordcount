@@ -1,1 +1,1 @@
-java -classpath lib/*:build DocSummary $1 
+java -classpath lib/*:build docHandlerDocSummary $1 

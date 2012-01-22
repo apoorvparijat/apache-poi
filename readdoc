@@ -1,1 +1,1 @@
-java -classpath ./lib/*:build ReadDoc $@
+java -classpath ./lib/*:build docHandler.ReadDoc $@
