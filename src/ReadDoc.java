@@ -9,41 +9,18 @@ public class ReadDoc
 	
 	public static void main(String args[])
 	{
-		int count = getWordCount(args[0]);
-		System.out.println("WordCount: " + count);
-	}
-	
-	public static void mainPrintText(String args[])
-	{
-		String filename = args[0];
-		System.out.println(filename);
-		POIFSFileSystem fs = null;
-		try
+		if(args[0].equals("-t"))
 		{
-			fs = new POIFSFileSystem(new FileInputStream(filename));
-
-			HWPFDocument doc = new HWPFDocument(fs);
-			WordExtractor we = new WordExtractor(doc);
-
-			String[] paragraphs = we.getParagraphText();
-			System.out.println("Word document has " + paragraphs.length + " paragraphs.");
-
-			// For loop to print paragraphs.
-			
-			for(int i = 0; i < paragraphs.length; i++)
-			{
-				paragraphs[i] = paragraphs[i].replaceAll("\\cM?\r?\n","");
-				//System.out.println("Length:" + paragraphs[i].length());
-				System.out.println(paragraphs[i]);
-			}
-
-		}catch(Exception e)
+			System.out.println(getText(args[1],false));
+		}else if(args[0].equals("-wc"))
 		{
-			e.printStackTrace();
+			System.out.println(getWordCount(args[1]));
+		}else{
+			System.out.println(getWordCount(args[0]));
 		}
 	}
 
-	public static String getText(String filename)
+	public static String getText(String filename,boolean replace)
 	{
 		POIFSFileSystem fs = null;
 		String text = "";
@@ -60,8 +37,13 @@ public class ReadDoc
 			
 			for(int i = 0; i < paragraphs.length; i++)
 			{
-				paragraphs[i] = paragraphs[i].replaceAll("\\cM?\r?\n","");
-				text += paragraphs[i];
+				if(replace)
+				{
+					//paragraphs[i] = paragraphs[i].replaceAll("\\cM?\r?\n","");
+					text += paragraphs[i].trim();
+				}else{
+					text += paragraphs[i];
+				}
 			}
 
 		}catch(Exception e)
@@ -73,10 +55,10 @@ public class ReadDoc
 
 	public static int getWordCount(String filename)
 	{
-		String text = getText(filename);
-		String pattern = " ";
+		String text = getText(filename,false);
+		String pattern = "[^ \r\n'-]+?[ \r\n]+?";
 		Pattern p = Pattern.compile(pattern);
-		Matcher m = p.matcher(text);
+		Matcher m = p.matcher(text.trim());
 		int count = 0;
 		while(m.find())
 			count++;
